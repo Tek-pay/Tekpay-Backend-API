@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\AuthController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 
 // Route for user authentication
-Route::post('login', 'AuthController@login');
-Route::post('register', 'AuthController@register');
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
 
 // Protected routes that require authentication
 Route::middleware('auth:api')->group(function () {
