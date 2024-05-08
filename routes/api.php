@@ -16,25 +16,31 @@ Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:san
 Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/password/reset', [ResetPasswordController::class, 'reset']);
 
+
+// Admin Routes
+Route::middleware(['auth:admin'])->group(function () {
+    // Admin can perform CRUD operations on users
+    Route::get('/users', [UserController::class, 'index']); // List all users
+    Route::post('/users', [UserController::class, 'store']); // Create a new user
+    Route::get('/users/{user}', [UserController::class, 'show']); // View details of a user
+    Route::put('/users/{user}', [UserController::class, 'update']); // Update a user
+    Route::delete('/users/{user}', [UserController::class, 'destroy']); // Delete a user
+    
+    // Admin-specific routes, if any
+    Route::get('/admins', [AdminController::class, 'index']); // List all admins
+    Route::post('/admins', [AdminController::class, 'store']); // Create a new admin
+    Route::get('/admins/{admin}', [AdminController::class, 'show']); // View details of an admin
+    Route::put('/admins/{admin}', [AdminController::class, 'update']); // Update an admin
+    Route::delete('/admins/{admin}', [AdminController::class, 'destroy']); // Delete an admin
+});
+
+
 // User Routes
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
+    // Users can only perform CRUD operations on their own account
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-
-    Route::get('/users', [UserController::class, 'index']);
-    Route::post('/users', [UserController::class, 'store']);
-    Route::get('/users/{user}', [UserController::class, 'show']);
-    Route::put('/users/{user}', [UserController::class, 'update']);
-    Route::delete('/users/{user}', [UserController::class, 'destroy']);
+    Route::put('/user', [UserController::class, 'update']); // Update user's own account
+    Route::delete('/user', [UserController::class, 'destroy']); // Delete user's own account
 });
-
-// Admin Routes
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/admins', [AdminController::class, 'index']);
-    Route::post('/admins', [AdminController::class, 'store']);
-    Route::get('/admins/{admin}', [AdminController::class, 'show']);
-    Route::put('/admins/{admin}', [AdminController::class, 'update']);
-    Route::delete('/admins/{admin}', [AdminController::class, 'destroy']);
-});
-
