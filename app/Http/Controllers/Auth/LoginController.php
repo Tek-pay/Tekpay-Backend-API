@@ -35,7 +35,7 @@ class LoginController extends Controller
             }
 
             // Attempt admin authentication
-            if (Auth::guard('admin')->attempt(['email' => $request->email, 'password' => $request->password])) {
+            if (auth()->guard('admin')->attempt($request->only('email', 'password'))) {
                 $admin = Auth::guard('admin')->user();
                 $token = $admin->createToken('AuthToken')->plainTextToken;
 
@@ -51,7 +51,7 @@ class LoginController extends Controller
             \Log::error('Login Error: ' . $e->getMessage());
 
             // Return a generic error response
-            return response()->json(['message' => 'Internal Server Error'], 500);
+            return response()->json(['message' => 'Internal Server Error' . $e->getMessage()], 500);
         }
     }
 
