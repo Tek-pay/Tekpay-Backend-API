@@ -42,16 +42,15 @@ return [
         ],
 
         'api' => [
-            'driver' => 'sanctum',
+            'driver' => 'token',
             'provider' => 'users',
             'hash' => false,
         ],
 
         'admin' => [
-            'driver' => 'sanctum',
+            'driver' => 'session',
             'provider' => 'admins',
-            'hash' => true, 
-        ],
+        ]
     ],
 
     /*
