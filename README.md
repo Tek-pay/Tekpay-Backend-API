@@ -112,9 +112,9 @@ Success: 200 OK
 Error: 401 Unauthorized
 
 
-{
-  "message": "Unauthorized"
-}
+    {
+        "message": "Unauthorized"
+    }
 
 2) Update Profile
 
@@ -124,26 +124,27 @@ Description: Update the authenticated user's profile.
 Headers: Authorization: Bearer your_access_token
 Request Body:
 
-{
-  "name": "Jane Doe",
-  "email": "jane@example.com"
-}
+    {
+        "name": "Jane Doe",
+        "email": "jane@example.com"
+    }
 
 Response:
 Success: 200 OK
 
-{
-  "id": 1,
-  "name": "Jane Doe",
-  "email": "jane@example.com",
-  "created_at": "2023-01-01T00:00:00.000000Z",
-  "updated_at": "2023-01-01T00:00:00.000000Z"
-}
+    {
+        "id": 1,
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "created_at": "2023-01-01T00:00:00.000000Z",
+        "updated_at": "2023-01-01T00:00:00.000000Z"
+    }
+
 Error: 401 Unauthorized
 
-{
-  "message": "Unauthorized"
-}
+    {
+        "message": "Unauthorized"
+    }
 
 3) Delete Profile
 
@@ -156,9 +157,9 @@ Response:
 Success: 204 No Content
 Error: 401 Unauthorized
 
-{
-  "message": "Unauthorized"
-}
+    {
+        "message": "Unauthorized"
+    }
 
 
 
@@ -172,25 +173,26 @@ Description: Purchase airtime.
 Headers: Authorization: Bearer your_access_token
 Request Body:
 
-{
-  "network": "mtn",
-  "phone": "08012345678",
-  "amount": 500
-}
+    {
+        "network": "mtn",
+        "phone": "08012345678",
+        "amount": 500
+    }
 
 Response:
 Success: 200 OK
 
-{
-  "status": "success",
-  "transaction_id": "1234567890",
-  "details": "Airtime purchase details..."
-}
+    {
+        "status": "success",
+        "transaction_id": "1234567890",
+        "details": "Airtime purchase details..."
+    }
+
 Error: 400 Bad Request
 
-{
-  "message": "Error message"
-}
+    {
+        "message": "Error message"
+    }
 
 
 2) Pay Electricity Bill
@@ -201,26 +203,27 @@ Description: Pay an electricity bill.
 Headers: Authorization: Bearer your_access_token
 Request Body:
 
-{
-  "serviceID": "eko-electric",
-  "meter_number": "1234567890",
-  "amount": 1000,
-  "phone": "08012345678"
-}
+    {
+        "serviceID": "eko-electric",
+        "meter_number": "1234567890",
+        "amount": 1000,
+        "phone": "08012345678"
+    }
 
 Response:
 Success: 200 OK
 
-{
-  "status": "success",
-  "transaction_id": "1234567890",
-  "details": "Electricity payment details..."
-}
+    {
+        "status": "success",
+        "transaction_id": "1234567890",
+        "details": "Electricity payment details..."
+    }
+
 Error: 400 Bad Request
 
-{
-  "message": "Error message"
-}
+    {
+        "message": "Error message"
+    }
 
 
 3) Buy Data
@@ -231,24 +234,26 @@ Description: Purchase data.
 Headers: Authorization: Bearer your_access_token
 Request Body:
 
-{
-  "network": "mtn",
-  "phone": "08012345678",
-  "amount": 1000
-}
+    {
+        "network": "mtn",
+        "phone": "08012345678",
+        "amount": 1000
+    }
+
 Response:
 Success: 200 OK
 
-{
-  "status": "success",
-  "transaction_id": "1234567890",
-  "details": "Data purchase details..."
-}
+    {
+        "status": "success",
+        "transaction_id": "1234567890",
+        "details": "Data purchase details..."
+    }
+
 Error: 400 Bad Request
 
-{
-  "message": "Error message"
-}
+    {
+        "message": "Error message"
+    }
 
 
 4) Subscribe to TV
@@ -259,44 +264,45 @@ Description: Subscribe to a TV service.
 Headers: Authorization: Bearer your_access_token
 Request Body:
 
-{
-  "serviceID": "dstv",
-  "smartcard_number": "1234567890",
-  "amount": 2000,
-  "phone": "08012345678"
-}
+    {
+        "serviceID": "dstv",
+        "smartcard_number": "1234567890",
+        "amount": 2000,
+        "phone": "08012345678"
+    }
 
 Response:
 Success: 200 OK
 
-{
-  "status": "success",
-  "transaction_id": "1234567890",
-  "details": "TV subscription details..."
-}
+    {
+        "status": "success",
+        "transaction_id": "1234567890",
+        "details": "TV subscription details..."
+    }
+
 Error: 400 Bad Request
 
-{
-  "message": "Error message"
-}
+    {
+        "message": "Error message"
+    }
 
 Error Handling
 Common Error Responses
+
 401 Unauthorized
+    {
+        "message": "Unauthorized"
+    }
 
-{
-  "message": "Unauthorized"
-}
 422 Unprocessable Entity
+    {
+        "message": "Validation error message"
+    }
 
-{
-  "message": "Validation error message"
-}
 400 Bad Request
-
-{
-  "message": "Error message"
-}
+    {
+        "message": "Error message"
+    }
 
 
 
