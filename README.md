@@ -2,8 +2,7 @@ API Documentation
 This documentation covers the RESTful API endpoints for user authentication, and bill payments using VTPass via Laravel. The API is designed for consumption by a mobile application.
 
 Base URL
-arduino
-Copy code
+
 https://usetekpay.com/api
 
 Authentication
