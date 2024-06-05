@@ -31,4 +31,10 @@ return [
         ],
     ],
 
+    'vtpass' => [
+        'base_url' => env('VTPASS_BASE_URL'),
+        'username' => env('VTPASS_USERNAME'),
+        'password' => env('VTPASS_PASSWORD'),
+    ],
+
 ];

@@ -1,66 +1,305 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+API Documentation
+This documentation covers the RESTful API endpoints for user authentication, and bill payments using VTPass via Laravel. The API is designed for consumption by a mobile application.
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Base URL
+arduino
+Copy code
+https://usetekpay.com/api
 
-## About Laravel
+Authentication
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+1) Register
+Endpoint: POST /register
+Description: Register a new user.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Request Body:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
-## Learning Laravel
+    {
+        "name": "John Doe",
+        "email": "john@example.com",
+        "password": "password123",
+        "password_confirmation": "password123"
+    }
+Response:
+Success: 201 Created
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+    {
+    "user": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "created_at": "2023-01-01T00:00:00.000000Z",
+        "updated_at": "2023-01-01T00:00:00.000000Z"
+    },
+        "token": "your_access_token"
+   }
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Error: 422 Unprocessable Entity
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+    {
+        "message": "Validation error message"
+    }
 
-## Laravel Sponsors
+2) Login
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Endpoint: POST /login
+Description: Authenticate a user.
+Request Body:
 
-### Premium Partners
+    {
+        "email": "john@example.com",
+        "password": "password123"
+    }
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+Response:
+Success: 200 OK
 
-## Contributing
+    {
+    "user": {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "created_at": "2023-01-01T00:00:00.000000Z",
+        "updated_at": "2023-01-01T00:00:00.000000Z"
+    },
+        "token": "your_access_token"
+    }
+Error: 401 Unauthorized
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    {
+        "message": "Invalid credentials"
+    }
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3) Logout
 
-## Security Vulnerabilities
+Endpoint: POST /logout
+Description: Log out the authenticated user.
+Headers: Authorization: Bearer your_access_token
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Response:
+Success: 200 OK
 
-## License
+    {
+        "message": "Successfully logged out"
+    }
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Error: 401 Unauthorized
+
+    {
+        "message": "Unauthorized"
+    }
+
+User Profile
+
+1) Get Profile
+Endpoint: GET /user
+
+Description: Get the authenticated user's profile.
+Headers: Authorization: Bearer your_access_token
+
+Response:
+Success: 200 OK
+
+    {
+        "id": 1,
+        "name": "John Doe",
+        "email": "john@example.com",
+        "created_at": "2023-01-01T00:00:00.000000Z",
+        "updated_at": "2023-01-01T00:00:00.000000Z"
+    }
+Error: 401 Unauthorized
+
+
+{
+  "message": "Unauthorized"
+}
+
+2) Update Profile
+
+Endpoint: PUT /user
+
+Description: Update the authenticated user's profile.
+Headers: Authorization: Bearer your_access_token
+Request Body:
+
+{
+  "name": "Jane Doe",
+  "email": "jane@example.com"
+}
+
+Response:
+Success: 200 OK
+
+{
+  "id": 1,
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "created_at": "2023-01-01T00:00:00.000000Z",
+  "updated_at": "2023-01-01T00:00:00.000000Z"
+}
+Error: 401 Unauthorized
+
+{
+  "message": "Unauthorized"
+}
+
+3) Delete Profile
+
+Endpoint: DELETE /user
+
+Description: Delete the authenticated user's profile.
+Headers: Authorization: Bearer your_access_token
+
+Response:
+Success: 204 No Content
+Error: 401 Unauthorized
+
+{
+  "message": "Unauthorized"
+}
+
+
+
+Bill Payments
+
+1) Buy Airtime
+
+Endpoint: POST /pay/airtime
+
+Description: Purchase airtime.
+Headers: Authorization: Bearer your_access_token
+Request Body:
+
+{
+  "network": "mtn",
+  "phone": "08012345678",
+  "amount": 500
+}
+
+Response:
+Success: 200 OK
+
+{
+  "status": "success",
+  "transaction_id": "1234567890",
+  "details": "Airtime purchase details..."
+}
+Error: 400 Bad Request
+
+{
+  "message": "Error message"
+}
+
+
+2) Pay Electricity Bill
+
+Endpoint: POST /pay/electricity
+
+Description: Pay an electricity bill.
+Headers: Authorization: Bearer your_access_token
+Request Body:
+
+{
+  "serviceID": "eko-electric",
+  "meter_number": "1234567890",
+  "amount": 1000,
+  "phone": "08012345678"
+}
+
+Response:
+Success: 200 OK
+
+{
+  "status": "success",
+  "transaction_id": "1234567890",
+  "details": "Electricity payment details..."
+}
+Error: 400 Bad Request
+
+{
+  "message": "Error message"
+}
+
+
+3) Buy Data
+
+Endpoint: POST /pay/data
+
+Description: Purchase data.
+Headers: Authorization: Bearer your_access_token
+Request Body:
+
+{
+  "network": "mtn",
+  "phone": "08012345678",
+  "amount": 1000
+}
+Response:
+Success: 200 OK
+
+{
+  "status": "success",
+  "transaction_id": "1234567890",
+  "details": "Data purchase details..."
+}
+Error: 400 Bad Request
+
+{
+  "message": "Error message"
+}
+
+
+4) Subscribe to TV
+
+Endpoint: POST /pay/tv
+
+Description: Subscribe to a TV service.
+Headers: Authorization: Bearer your_access_token
+Request Body:
+
+{
+  "serviceID": "dstv",
+  "smartcard_number": "1234567890",
+  "amount": 2000,
+  "phone": "08012345678"
+}
+
+Response:
+Success: 200 OK
+
+{
+  "status": "success",
+  "transaction_id": "1234567890",
+  "details": "TV subscription details..."
+}
+Error: 400 Bad Request
+
+{
+  "message": "Error message"
+}
+
+Error Handling
+Common Error Responses
+401 Unauthorized
+
+{
+  "message": "Unauthorized"
+}
+422 Unprocessable Entity
+
+{
+  "message": "Validation error message"
+}
+400 Bad Request
+
+{
+  "message": "Error message"
+}
+
+
+
+
+
+

@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\BillPaymentController;
 
 // Authentication Routes
 Route::post('/register', [RegisterController::class, 'register']);
@@ -26,7 +27,7 @@ Route::middleware(['auth:admin'])->group(function () {
     Route::put('/users/{user}', [UserController::class, 'update']); // Update a user
     Route::delete('/users/{user}', [UserController::class, 'destroy']); // Delete a user
     
-    // Admin-specific routes, if any
+    // Admin-specific routes
     Route::get('/admins', [AdminController::class, 'index']); // List all admins
     Route::post('/admins', [AdminController::class, 'store']); // Create a new admin
     Route::get('/admins/{admin}', [AdminController::class, 'show']); // View details of an admin
@@ -43,4 +44,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     });
     Route::put('/user', [UserController::class, 'update']); // Update user's own account
     Route::delete('/user', [UserController::class, 'destroy']); // Delete user's own account
+
+    Route::post('pay/airtime', [BillPaymentController::class, 'buyAirtime']);
+    Route::post('pay/electricity', [BillPaymentController::class, 'payElectricityBill']);
+    Route::post('pay/data', [BillPaymentController::class, 'buyData']);
+    Route::post('pay/tv', [BillPaymentController::class, 'subscribeTV']);
 });
