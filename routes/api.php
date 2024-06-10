@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BillPaymentController;
+use App\Http\Controllers\OTPController;
 
 // Authentication Routes
 Route::post('/register', [RegisterController::class, 'register']);
@@ -16,6 +17,9 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/logout', [LoginController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/password/email', [ForgotPasswordController::class, 'sendResetLinkEmail']);
 Route::post('/password/reset', [ResetPasswordController::class, 'reset']);
+
+Route::post('/generate-otp', [OTPController::class, 'generateOTP']);
+Route::post('/verify-otp', [OTPController::class, 'verifyOTP']);
 
 
 // Admin Routes
