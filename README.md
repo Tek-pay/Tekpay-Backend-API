@@ -3,7 +3,7 @@ This documentation covers the RESTful API endpoints for user authentication, and
 
 Base URL
 
-https://usetekpay.com/api
+https://api.usetekpay.com/api
 
 Authentication
 
