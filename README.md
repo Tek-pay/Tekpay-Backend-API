@@ -90,6 +90,70 @@ Error: 401 Unauthorized
         "message": "Unauthorized"
     }
 
+OTP
+
+1) Generate OTP
+Endpoint: POST /generate-otp
+
+Description: Generates and sends an OTP to the user's phone number using Firebase.
+
+Headers: Content-Type: application/json
+
+Request Body:
+    {
+        "phone": "string"
+    }
+
+Response: 200 OK
+    {
+        "message": "OTP sent successfully",
+        "verification_id": "string"
+    }
+
+Error: 400 Bad Request
+
+    {
+        "error": {
+            "phone": ["The phone field is required."]
+        }
+    }
+
+Error: 500 Internal Server Error
+    {
+        "error": "Unable to send OTP: error_message"
+    }
+
+2) Verify OTP
+Endpoint: POST /verify-otp
+
+Description: Verifies the OTP entered by the user.
+Headers: Content-Type: application/json
+
+Request Body: 
+    {
+        "verification_id": "string",
+        "otp": "string"
+    }
+
+Response: 200 OK
+    {
+        "message": "OTP verified successfully"
+    }
+
+Error: 400 Bad Request
+    {
+        "error": {
+            "verification_id": ["The verification id field is required."],
+            "otp": ["The otp field is required."]
+        }
+    }
+
+Error: 500 Internal Server Error
+    {
+        "error": "Internal Server Error: error_message"
+    }
+
+
 User Profile
 
 1) Get Profile
