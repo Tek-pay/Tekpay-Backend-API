@@ -9,6 +9,7 @@ Authentication
 
 1) Register
 Endpoint: POST /register
+
 Description: Register a new user.
 
 Request Body:
@@ -43,7 +44,9 @@ Error: 422 Unprocessable Entity
 2) Login
 
 Endpoint: POST /login
+
 Description: Authenticate a user.
+
 Request Body:
 
     {
@@ -52,6 +55,7 @@ Request Body:
     }
 
 Response:
+
 Success: 200 OK
 
     {
@@ -74,7 +78,9 @@ Error: 401 Unauthorized
 3) Logout
 
 Endpoint: POST /logout
+
 Description: Log out the authenticated user.
+
 Headers: Authorization: Bearer your_access_token
 
 Response:
@@ -96,6 +102,7 @@ OTP
 Endpoint: POST /generate-otp
 
 Description: Generates and sends an OTP to the user's phone number using Firebase.
+
 Headers: Content-Type: application/json
 
 Request Body:
@@ -129,6 +136,7 @@ Error: 500 Internal Server Error
 Endpoint: POST /verify-otp
 
 Description: Verifies the OTP entered by the user.
+
 Headers: Content-Type: application/json
 
 Request Body: 
@@ -166,6 +174,7 @@ User Profile
 Endpoint: GET /user
 
 Description: Get the authenticated user's profile.
+
 Headers: Authorization: Bearer your_access_token
 
 Response:
@@ -190,7 +199,9 @@ Error: 401 Unauthorized
 Endpoint: PUT /user
 
 Description: Update the authenticated user's profile.
+
 Headers: Authorization: Bearer your_access_token
+
 Request Body:
 
     {
@@ -220,6 +231,7 @@ Error: 401 Unauthorized
 Endpoint: DELETE /user
 
 Description: Delete the authenticated user's profile.
+
 Headers: Authorization: Bearer your_access_token
 
 Response:
@@ -239,7 +251,9 @@ Bill Payments
 Endpoint: POST /pay/airtime
 
 Description: Purchase airtime.
+
 Headers: Authorization: Bearer your_access_token
+
 Request Body:
 
     {
@@ -269,7 +283,9 @@ Error: 400 Bad Request
 Endpoint: POST /pay/electricity
 
 Description: Pay an electricity bill.
+
 Headers: Authorization: Bearer your_access_token
+
 Request Body:
 
     {
@@ -300,7 +316,9 @@ Error: 400 Bad Request
 Endpoint: POST /pay/data
 
 Description: Purchase data.
+
 Headers: Authorization: Bearer your_access_token
+
 Request Body:
 
     {
@@ -330,7 +348,9 @@ Error: 400 Bad Request
 Endpoint: POST /pay/tv
 
 Description: Subscribe to a TV service.
+
 Headers: Authorization: Bearer your_access_token
+
 Request Body:
 
     {
@@ -356,6 +376,7 @@ Error: 400 Bad Request
     }
 
 Error Handling
+
 Common Error Responses
 
 401 Unauthorized
