@@ -19,15 +19,17 @@ class VTPassService
 
     public function makeRequest($endpoint, $data)
     {
+        $url = $this->baseUrl  . $endpoint;
         $response = Http::withBasicAuth($this->username, $this->password)
-            ->post("{$this->baseUrl}/$endpoint", $data);
-
+            ->post($url, $data);
         return $response->json();
     }
 
-    public function buyAirtime($network, $phone, $amount)
+    public function buyAirtime($requestId, $network, $phone, $amount)
     {
+
         return $this->makeRequest('pay', [
+            'request_id' => $requestId,
             'serviceID' => $network,
             'amount' => $amount,
             'phone' => $phone,

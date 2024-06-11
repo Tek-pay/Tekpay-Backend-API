@@ -62,33 +62,36 @@ class UserController extends Controller
     }
 
     // Method to update a user
-    public function update(Request $request, User $user)
+    public function update(Request $request)
     {
-        // Authorization check: User can only update their own information
-        if ($user->id !== Auth::id()) {
+        $user = $request->user();
+        if ($request->user()->id !== auth()->id()) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        // Validation
         $validator = Validator::make($request->all(), [
-            'name' => 'string|max:255',
-            'email' => 'string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'string|min:8',
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'sometimes|string|min:8|confirmed',
         ]);
 
         if ($validator->fails()) {
             return response()->json($validator->errors(), 400);
         }
 
-        // Update user
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => isset($request->password) ? bcrypt($request->password) : $user->password,
-        ]);
+        $data = $validator->validated();
+
+        if (isset($data['password'])) {
+            $data['password'] = bcrypt($data['password']);
+        } else {
+            unset($data['password']);
+        }
+
+        $user->update($data);
 
         return response()->json($user, 200);
     }
+
 
     // Method to delete a user
     public function destroy(User $user)
