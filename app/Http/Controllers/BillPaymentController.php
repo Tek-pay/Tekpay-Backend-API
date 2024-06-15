@@ -38,26 +38,43 @@ class BillPaymentController extends Controller
         return response()->json($response);
     }
 
-    public function payElectricityBill(Request $request)
+    public function verifyElectricityBill(Request $request)
     {
         $request->validate([
             'serviceID' => 'required|string',
-            'meter_number' => 'required|string',
-            'amount' => 'required|numeric',
+            'meter_number' => 'required',
+            'type' => 'required|string',
             'phone' => 'required|string',
+            'amount' => 'required|numeric',
+
         ]);
 
-        $response = $this->vtpassService->payElectricityBill(
+        $response = $this->vtpassService->verifyElectricityBill(
             $request->serviceID,
             $request->meter_number,
-            $request->amount,
-            $request->phone
+            $request->type,
         );
+ dd($response);
 
-        $this->logTransaction($request, $response, 'electricity');
+        if(isset($response['status'])){
+            if($response['status']=='success'){
 
-        return response()->json($response);
-    }
+                $request_id = $this->generateRequestId();
+                $serviceID = $request->serviceID;
+                $billersCode = $request->meter_number;
+                $variation_code = $request->type;
+                $amount = $request->amount;
+                $phone = $request->phone;
+
+                $response = $this->vtpassService->payElectricityBill($request_id, $serviceID, $billersCode, $variation_code,$amount,$phone);
+                // dd($response);
+                $this->logTransaction($request, $response, 'electricity');
+
+                return response()->json($response);
+            }
+            }
+        }
+
 
     public function buyData(Request $request)
     {
@@ -110,7 +127,7 @@ class BillPaymentController extends Controller
                 'service_id' => $request->serviceID ?? $request->network,
                 'amount' => $request->amount,
                 'status' => $response['code'] === '000' ? 'success' : 'failed',
-                'transaction_id' => $response['requestId'],
+                'transaction_id' => $response['requestId'] ?? $this->generateRequestId(),
                 'response' => json_encode($response),
             ]);
         }else{

@@ -4,6 +4,8 @@ namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
 
+use function PHPUnit\Framework\throwException;
+
 class VTPassService
 {
     protected $baseUrl;
@@ -36,15 +38,49 @@ class VTPassService
         ]);
     }
 
-    public function payElectricityBill($serviceID, $meterNumber, $amount, $phone)
+    public function verifyElectricityBill($serviceID, $meterNumber,$type)
     {
-        return $this->makeRequest('pay', [
+        $data =
+        [
             'serviceID' => $serviceID,
-            'meter_number' => $meterNumber,
+            'billersCode' => $meterNumber,
+            'type' => $type
+        ];
+        $url = $this->baseUrl  . 'merchant-verify';
+        $response = Http::withBasicAuth($this->username, $this->password)
+            ->post($url, $data);
+
+             if(isset($response['content']['error'])){
+                 return response()->json([
+                    'status' => 'error',
+                    'message'=>'Merchant verify failed: ' . $response['content']['error'],
+                ],402);
+
+             }else{
+                return [
+                    'status' => 'success',
+                    'message'=>'Merchant verify success',
+                    'data' => json_encode($response->body()),
+                ];
+             };
+    }
+
+    public function payElectricityBill($requestId, $serviceID, $billersCode, $variation_code,$amount,$phone)
+    {
+
+
+
+        return $this->makeRequest('pay', [
+            'request_id' => $requestId,
+            'serviceID' => $serviceID,
+            'billersCode' => (string) $billersCode,
+            'variation_code' => $variation_code,
             'amount' => $amount,
             'phone' => $phone,
         ]);
     }
+
+
 
     public function buyData($network, $phone, $amount)
     {
