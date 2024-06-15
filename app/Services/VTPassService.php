@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 use function PHPUnit\Framework\throwException;
 
@@ -38,34 +40,34 @@ class VTPassService
         ]);
     }
 
-    public function verifyElectricityBill($serviceID, $meterNumber,$type)
+    public function verifyElectricityBill($serviceID, $meterNumber, $type)
     {
         $data =
-        [
-            'serviceID' => $serviceID,
-            'billersCode' => $meterNumber,
-            'type' => $type
-        ];
+            [
+                'serviceID' => $serviceID,
+                'billersCode' => $meterNumber,
+                'type' => $type
+            ];
         $url = $this->baseUrl  . 'merchant-verify';
         $response = Http::withBasicAuth($this->username, $this->password)
             ->post($url, $data);
 
-             if(isset($response['content']['error'])){
-                 return response()->json([
-                    'status' => 'error',
-                    'message'=>'Merchant verify failed: ' . $response['content']['error'],
-                ],402);
+        if (isset($response['content']['error'])) {
 
-             }else{
-                return [
-                    'status' => 'success',
-                    'message'=>'Merchant verify success',
-                    'data' => json_encode($response->body()),
-                ];
-             };
+            $validator = Validator::make([], []); // Creating an empty validator
+            $validator->errors()->add('merchant_verification', 'Merchant verify failed: ' . $response['content']['error']);
+
+            throw new ValidationException($validator);
+        } else {
+            return [
+                'status' => 'success',
+                'message' => 'Merchant verify success',
+                'data' => json_encode($response->body()),
+            ];
+        };
     }
 
-    public function payElectricityBill($requestId, $serviceID, $billersCode, $variation_code,$amount,$phone)
+    public function payElectricityBill($requestId, $serviceID, $billersCode, $variation_code, $amount, $phone)
     {
 
 
@@ -79,8 +81,6 @@ class VTPassService
             'phone' => $phone,
         ]);
     }
-
-
 
     public function buyData($network, $phone, $amount)
     {

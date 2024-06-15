@@ -54,7 +54,6 @@ class BillPaymentController extends Controller
             $request->meter_number,
             $request->type,
         );
- dd($response);
 
         if(isset($response['status'])){
             if($response['status']=='success'){
