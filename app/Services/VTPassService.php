@@ -3,6 +3,10 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
+
+use function PHPUnit\Framework\throwException;
 
 class VTPassService
 {
@@ -36,11 +40,43 @@ class VTPassService
         ]);
     }
 
-    public function payElectricityBill($serviceID, $meterNumber, $amount, $phone)
+    public function verifyElectricityBill($serviceID, $meterNumber, $type)
     {
+        $data =
+            [
+                'serviceID' => $serviceID,
+                'billersCode' => $meterNumber,
+                'type' => $type
+            ];
+        $url = $this->baseUrl  . 'merchant-verify';
+        $response = Http::withBasicAuth($this->username, $this->password)
+            ->post($url, $data);
+
+        if (isset($response['content']['error'])) {
+
+            $validator = Validator::make([], []); // Creating an empty validator
+            $validator->errors()->add('merchant_verification', 'Merchant verify failed: ' . $response['content']['error']);
+
+            throw new ValidationException($validator);
+        } else {
+            return [
+                'status' => 'success',
+                'message' => 'Merchant verify success',
+                'data' => json_encode($response->body()),
+            ];
+        };
+    }
+
+    public function payElectricityBill($requestId, $serviceID, $billersCode, $variation_code, $amount, $phone)
+    {
+
+
+
         return $this->makeRequest('pay', [
+            'request_id' => $requestId,
             'serviceID' => $serviceID,
-            'meter_number' => $meterNumber,
+            'billersCode' => (string) $billersCode,
+            'variation_code' => $variation_code,
             'amount' => $amount,
             'phone' => $phone,
         ]);
