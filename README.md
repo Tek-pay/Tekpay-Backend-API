@@ -168,6 +168,78 @@ Error: 500 Internal Server Error
     }
 
 
+PIN
+
+1) Set PIN
+Endpoint: POST /set-pin
+
+Description: Sets a 4-digit PIN for the authenticated user.
+
+Headers: 
+Authorization: Bearer {token}
+Content-Type: application/json
+
+Request Body: 
+
+    {
+        "pin": "1234"
+    }
+
+Response: 200 OK
+
+    {
+        "message": "PIN set successfully"
+    }
+
+Error: 400 Bad Request
+
+    {
+        "error": {
+            "pin": ["The pin must be 4 digits."]
+        }
+    }
+
+Error: 401 Unauthorised
+
+    {
+        "error": "Unauthenticated."
+    }
+
+2) Verify PIN
+Endpoint: POST /verify-pin
+
+Description: Verifies the 4-digit PIN for the authenticated user.
+
+Headers: 
+Authorization: Bearer {token}
+Content-Type: application/json
+
+Request Body: 
+
+    {
+        "pin": "1234"
+    }
+
+Response: 200 OK
+
+    {
+        "message": "PIN verified successfully"
+    }
+
+Error: 400 Bad Request
+
+    {
+        "error": "Invalid pin" 
+    }
+
+Error: 401 Unauthorised
+
+    {
+        "error": "Unauthenticated."
+    }
+
+
+
 User Profile
 
 1) Get Profile

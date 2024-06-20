@@ -10,6 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BillPaymentController;
 use App\Http\Controllers\OTPController;
+use App\Http\Controllers\PinController;
 
 // Authentication Routes
 Route::post('/register', [RegisterController::class, 'register']);
@@ -54,4 +55,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('verify/electricity', [BillPaymentController::class, 'verifyElectricityBill']);
     Route::post('pay/data', [BillPaymentController::class, 'buyData']);
     Route::post('pay/tv', [BillPaymentController::class, 'subscribeTV']);
+
+    Route::post('/set-pin', [PinController::class, 'setPin']);
+    Route::post('/verify-pin', [PinController::class, 'verifyPin']);
 });
