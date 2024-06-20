@@ -99,6 +99,7 @@ Error: 401 Unauthorized
 OTP
 
 1) Generate OTP
+
 Endpoint: POST /generate-otp
 
 Description: Generates and sends an OTP to the user's phone number using Firebase.
@@ -133,6 +134,7 @@ Error: 500 Internal Server Error
     }
 
 2) Verify OTP
+
 Endpoint: POST /verify-otp
 
 Description: Verifies the OTP entered by the user.
@@ -171,6 +173,7 @@ Error: 500 Internal Server Error
 PIN
 
 1) Set PIN
+
 Endpoint: POST /set-pin
 
 Description: Sets a 4-digit PIN for the authenticated user.
@@ -206,6 +209,7 @@ Error: 401 Unauthorised
     }
 
 2) Verify PIN
+
 Endpoint: POST /verify-pin
 
 Description: Verifies the 4-digit PIN for the authenticated user.
@@ -243,6 +247,7 @@ Error: 401 Unauthorised
 User Profile
 
 1) Get Profile
+
 Endpoint: GET /user
 
 Description: Get the authenticated user's profile.
@@ -335,6 +340,7 @@ Request Body:
     }
 
 Response:
+
 Success: 200 OK
 
     {
@@ -368,6 +374,7 @@ Request Body:
     }
 
 Response:
+
 Success: 200 OK
 
     {
@@ -400,6 +407,7 @@ Request Body:
     }
 
 Response:
+
 Success: 200 OK
 
     {
@@ -433,6 +441,7 @@ Request Body:
     }
 
 Response:
+
 Success: 200 OK
 
     {
