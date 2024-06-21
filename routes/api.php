@@ -11,6 +11,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BillPaymentController;
 use App\Http\Controllers\OTPController;
 use App\Http\Controllers\PinController;
+use App\Http\Controllers\WalletController;
 
 // Authentication Routes
 Route::post('/register', [RegisterController::class, 'register']);
@@ -47,15 +48,20 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
-    Route::put('/user', [UserController::class, 'update']); // Update user's own account
-    Route::delete('/user', [UserController::class, 'destroy']); // Delete user's own account
+    Route::put('/user', [UserController::class, 'update']); 
+    Route::delete('/user', [UserController::class, 'destroy']); 
 
     Route::post('pay/airtime', [BillPaymentController::class, 'buyAirtime']);
     Route::post('pay/electricity', [BillPaymentController::class, 'payElectricityBill']);
-    Route::post('verify/electricity', [BillPaymentController::class, 'verifyElectricityBill']);
+    // Route::post('verify/electricity', [BillPaymentController::class, 'verifyElectricityBill']);
     Route::post('pay/data', [BillPaymentController::class, 'buyData']);
     Route::post('pay/tv', [BillPaymentController::class, 'subscribeTV']);
 
     Route::post('/set-pin', [PinController::class, 'setPin']);
     Route::post('/verify-pin', [PinController::class, 'verifyPin']);
+    Route::post('/update-pin', [PinController::class, 'updatePin']);
+
+    Route::get('/wallet/balance', [WalletController::class, 'balance']);
+    Route::get('/wallet/transactions', [WalletController::class, 'transactions']);
+    Route::post('/wallet/deposit', [WalletController::class, 'deposit']); 
 });

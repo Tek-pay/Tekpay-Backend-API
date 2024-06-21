@@ -321,6 +321,72 @@ Error: 401 Unauthorized
 
 
 
+Wallet
+
+1) Get Wallet Balance
+
+Endpoint: GET /api/wallet
+
+Description: Fetches the current balance of the user's wallet.
+
+Headers: Authorization: Bearer {token}
+
+Response:
+
+    {
+        "balance": "number",
+        "currency": "string"
+    }
+
+2) Add Funds To Wallet
+
+Endpoint: POST /wallet/add
+
+Description: Adds funds to the user's wallet.
+
+Headers: Authorization: Bearer {access_token}
+
+Request Body:
+
+    {
+        "amount": "number",
+        "payment_method": "string"
+    }
+
+Response:
+
+Success 200 OK
+
+    {
+        "status": "success",
+        "message": "Funds added successfully"
+    }
+
+3) Get Transactions History
+
+Endpoint: GET /wallet/transactions
+
+Description: Fetches the user's transaction history.
+
+Headers: Authorization: Bearer {access_token}
+
+Response:
+
+Success 200 OK
+
+    [
+        {
+            "id": "number",
+            "type": "string",
+            "amount": "number",
+            "status": "string",
+            "transaction_id": "string",
+            "created_at": "datetime"
+        },
+    ]
+
+
+
 Bill Payments
 
 1) Buy Airtime
@@ -329,7 +395,7 @@ Endpoint: POST /pay/airtime
 
 Description: Purchase airtime.
 
-Headers: Authorization: Bearer your_access_token
+Headers: Headers: Authorization: Bearer {token}
 
 Request Body:
 

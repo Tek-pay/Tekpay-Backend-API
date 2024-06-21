@@ -35,4 +35,17 @@ class PinController extends Controller
             return response()->json(['error' => 'Invalid PIN'], 400);
         }
     }
+
+    public function updatePin(Request $request)
+    {
+        $request->validate([
+            'pin' => 'required|digits:4',
+        ]);
+
+        $user = Auth::user();
+        $user->pin = Hash::make($request->pin);
+        $user->save();
+
+        return response()->json(['message' => 'PIN updated successfully']);
+    }
 }

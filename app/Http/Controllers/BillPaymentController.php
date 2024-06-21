@@ -24,13 +24,13 @@ class BillPaymentController extends Controller
             'phone' => 'required|numeric',
             'amount' => 'required|numeric',
         ]);
+
         $requestId = $this->generateRequestId();
         $response = $this->vtpassService->buyAirtime(
             $requestId,
             $request->network,
             $request->phone,
             $request->amount
-
         );
 
         $this->logTransaction($request, $response, 'airtime');
@@ -38,42 +38,30 @@ class BillPaymentController extends Controller
         return response()->json($response);
     }
 
-    public function verifyElectricityBill(Request $request)
+    public function payElectricityBill(Request $request)
     {
         $request->validate([
             'serviceID' => 'required|string',
-            'meter_number' => 'required',
+            'meter_number' => 'required|string',
             'type' => 'required|string',
             'phone' => 'required|string',
             'amount' => 'required|numeric',
-
         ]);
 
-        $response = $this->vtpassService->verifyElectricityBill(
+        $requestId = $this->generateRequestId();
+        $response = $this->vtpassService->payElectricityBill(
+            $requestId,
             $request->serviceID,
             $request->meter_number,
             $request->type,
+            $request->amount,
+            $request->phone
         );
 
-        if(isset($response['status'])){
-            if($response['status']=='success'){
+        $this->logTransaction($request, $response, 'electricity');
 
-                $request_id = $this->generateRequestId();
-                $serviceID = $request->serviceID;
-                $billersCode = $request->meter_number;
-                $variation_code = $request->type;
-                $amount = $request->amount;
-                $phone = $request->phone;
-
-                $response = $this->vtpassService->payElectricityBill($request_id, $serviceID, $billersCode, $variation_code,$amount,$phone);
-                // dd($response);
-                $this->logTransaction($request, $response, 'electricity');
-
-                return response()->json($response);
-            }
-            }
-        }
-
+        return response()->json($response);
+    }
 
     public function buyData(Request $request)
     {
@@ -83,8 +71,9 @@ class BillPaymentController extends Controller
             'amount' => 'required|numeric',
         ]);
 
-
+        $requestId = $this->generateRequestId();
         $response = $this->vtpassService->buyData(
+            $requestId,
             $request->network,
             $request->phone,
             $request->amount
@@ -104,13 +93,14 @@ class BillPaymentController extends Controller
             'phone' => 'required|string',
         ]);
 
+        $requestId = $this->generateRequestId();
         $response = $this->vtpassService->subscribeTV(
+            $requestId,
             $request->serviceID,
             $request->smartcard_number,
             $request->amount,
             $request->phone
         );
-
 
         $this->logTransaction($request, $response, 'tv');
 
@@ -129,12 +119,10 @@ class BillPaymentController extends Controller
                 'transaction_id' => $response['requestId'] ?? $this->generateRequestId(),
                 'response' => json_encode($response),
             ]);
-        }else{
+        } else {
             throw new \Exception('Request failed');
-
         }
     }
-
 
     private function generateRequestId()
     {
